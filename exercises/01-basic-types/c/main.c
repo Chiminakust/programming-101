@@ -3,198 +3,218 @@
  */
 
 #include <stdio.h>
+#include <math.h>
 
-#define KNRM  "\x1B[0m"
-#define KRED  "\x1B[31m"
-#define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KBLU  "\x1B[34m"
-#define KMAG  "\x1B[35m"
-#define KCYN  "\x1B[36m"
-#define KWHT  "\x1B[37m"
-
-#define assert(condition)                                               \
-    do {                                                                \
-        if (!(condition)) {                                             \
-            printf(KRED"----\tassert line %d fail\t\t----\n"KNRM, __LINE__); \
-            return -1;                                                  \
-        }                                                               \
-    } while (0)
-
-#define assert_near(x, expected, tolerance) \
-    do {                                    \
-        assert(((expected * (1 - tolerance)) <= x) && (x <= (expected * (1 + tolerance)))) \
-    } while (0)
-
-#define test_start() do {                               \
-        printf(KBLU"----\t%s start\t\t\t----\n"KNRM, __func__); \
-    } while(0)
-
-#define test_pass() do {                                \
-        printf(KGRN"----\t%s pass\t\t\t----\n"KNRM, __func__);  \
-    } while(0)
+#include "utils.h"
+#include "solutions.c"
 
 static int run_all_tests(void);
 static int test_addi(void);
 static int test_addf(void);
+static int test_is_even(void);
+static int test_powerf(void);
+static int test_factorial(void);
 static int test_maclaurin_sin(void);
 static int test_maclaurin_cos(void);
 static int test_fib(void);
 static int test_string_to_int(void);
 static int test_int_to_string(void);
-// TODO: exercises for boolean manipulation
-
-/*
- * 1.1 Create a function named addi that takes 2 integers and returns the
- * sum of the two.
- */
-int
-addi(int a, int b)
-{
-    return a + b;
-}
-
-/*
- * 1.2 Create a function named addf that takes two floating point numbers
- * and returns the sum of the two.
- */
-float addf(float a, float b) {
-    return a + b;
-}
-
-/*
- * 1.3 Create a function that returns the power of x to y.
- * All arguments and return types are floating point number.
- */
-
-/*
- * 1.4 Maclaurin series of sin(x) and cos(x) to any Nth degree (check wikipedia).
- * Takes a float as argument and returns a float. Other arguments left as exercise.
- * Functions must be named maclaurin_sin and maclaurin_cos.
- */
-
-/*
- * 1.5 Create a function called fib that returns the Nth term of the fibonacci sequence.
- */
-
-/*
- * 1.6 Create a function called string_to_int that converts a string to an integer value.
- * The function takes a string as argument and returns an int.
- */
-
-/*
- * 1.7 Create a function called int_to_string that converts an int
- * to its string representation. The function can modify an input argument
- * and return an error code or return the string.
- */
 
 int
 main(int argc, char **argv)
 {
-    (void) argc;
-    (void) argv;
+	(void) argc;
+	(void) argv;
 
-    return run_all_tests();
+	return run_all_tests();
 }
 
 static int
 run_all_tests(void)
 {
-    printf("Test start.\n");
+	printf("Test start.\n");
 
-    if (test_addi()) {
+	if (test_addi()) {
+		return -1;
+	}
+
+	if (test_addf()) {
+		return -1;
+	}
+
+    if (test_is_even()) {
         return -1;
     }
 
-    if (test_addf()) {
+    if (test_powerf()) {
         return -1;
     }
 
-    if (test_maclaurin_sin()) {
+    if (test_factorial()) {
         return -1;
     }
 
-    if (test_maclaurin_cos()) {
-        return -1;
-    }
+	if (test_maclaurin_sin()) {
+		return -1;
+	}
 
-    if (test_fib()) {
-        return -1;
-    }
+	if (test_maclaurin_cos()) {
+		return -1;
+	}
 
-    if (test_string_to_int()) {
-        return -1;
-    }
+	if (test_fib()) {
+		return -1;
+	}
 
-    if (test_int_to_string()) {
-        return -1;
-    }
+	if (test_string_to_int()) {
+		return -1;
+	}
 
-    printf("All tests succeeded\n");
-    return 0;
+	if (test_int_to_string()) {
+		return -1;
+	}
+
+	printf("All tests succeeded\n");
+	return 0;
 }
 
 static int
 test_addi(void)
 {
+	test_start();
+
+	assert(addi(1, 2) == 3);
+	assert(addi(100, -2) == 98);
+
+	test_pass();
+	return 0;
+}
+
+static int
+test_addf(void)
+{
+	test_start();
+
+	assert_near(addf(1.3, 4.3), 5.6, 0.01);
+	assert_near(addf(0, 4.3), 4.3, 0.01);
+
+	test_pass();
+	return 0;
+}
+
+static int
+test_is_even(void)
+{
     test_start();
 
-    assert(addi(1, 2) == 3);
-    assert(addi(100, -2) == 98);
+    assert(is_even(0) == 1);
+    assert(is_even(-1) == 0);
+    assert(is_even(1) == 0);
+    assert(is_even(2) == 1);
 
     test_pass();
     return 0;
 }
 
 static int
-test_addf(void)
+test_powerf(void)
 {
-    test_start();
+	test_start();
+    assert_near(powerf(2, 4), 16, 0.01);
 
-    assert(addf(1.3, 4.3) == 5.6);
-    assert(addf(0, 4.3) == 4.3);
+	test_pass();
+    return 0;
+}
 
-    test_pass();
+static int
+test_factorial(void)
+{
+	test_start();
+    assert(factorial(0) == 1);
+    assert(factorial(1) == 1);
+    assert(factorial(2) == 2);
+    assert(factorial(3) == 6);
+    assert(factorial(8) == 40320);
+
+	test_pass();
     return 0;
 }
 
 static int
 test_maclaurin_sin(void)
 {
+	test_start();
 
-    return 0;
+    assert_near(maclaurin_sin(0, 7), sin(0), 0.05);
+    assert_near(maclaurin_sin(0.1, 7), sin(0.1), 0.05);
+    assert_near(maclaurin_sin(2, 7), sin(2), 0.05);
+    assert_near(maclaurin_sin(3, 7), sin(3), 0.05);
+    assert_near(maclaurin_sin(1.1, 7), sin(1.1), 0.05);
+    assert_near(maclaurin_sin(4, 7), sin(4), 0.05);
+
+	test_pass();
+	return 0;
 }
 
 static int
 test_maclaurin_cos(void)
 {
+	test_start();
+    assert_near(maclaurin_cos(0, 7), cos(0), 0.05);
+    assert_near(maclaurin_cos(0.1, 7), cos(0.1), 0.05);
+    assert_near(maclaurin_cos(1.1, 7), cos(1.1), 0.05);
+    assert_near(maclaurin_cos(3, 7), cos(3), 0.05);
+    assert_near(maclaurin_cos(4, 7), cos(4), 0.05);
 
-    return 0;
+	test_pass();
+	return 0;
 }
 
 static int
 test_fib(void)
 {
-    assert(fib(0) == 0);
-    assert(fib(1) == 1);
-    assert(fib(2) == 1);
-    assert(fib(3) == 2);
-    assert(fib(4) == 3);
-    assert(fib(5) == 5);
-    assert(fib(6) == 8);
-    assert(fib(19) == 4181);
-    assert(fib(-1) == 0);
-    return 0;
+	test_start();
+
+	assert(fib(0) == 0);
+	assert(fib(1) == 1);
+	assert(fib(2) == 1);
+	assert(fib(3) == 2);
+	assert(fib(4) == 3);
+	assert(fib(5) == 5);
+	assert(fib(6) == 8);
+	assert(fib(19) == 4181);
+	assert(fib(-1) == 0);
+
+	test_pass();
+	return 0;
 }
 
 static int
 test_string_to_int(void)
 {
-    return 0;
+	test_start();
+
+    assert(string_to_int("123") == 123);
+    assert(string_to_int("-10") == -10);
+    assert(string_to_int("abc") == 0);
+
+	test_pass();
+	return 0;
 }
 
 static int
 test_int_to_string(void)
 {
-    return 0;
+    char testbuf[64] = {0};
+
+	test_start();
+
+    int_to_string(123, testbuf);
+    assert(strcmp(testbuf, "123") == 0);
+
+    int_to_string(-1, testbuf);
+    assert(strcmp(testbuf, "-1") == 0);
+
+	test_pass();
+	return 0;
 }

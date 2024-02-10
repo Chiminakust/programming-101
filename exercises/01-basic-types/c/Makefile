@@ -3,7 +3,7 @@
 all: main
 
 main: 
-	$(CC) main.c -o main
+	$(CC) main.c -o main -lm
 
 # TODO: complete this
 test:
