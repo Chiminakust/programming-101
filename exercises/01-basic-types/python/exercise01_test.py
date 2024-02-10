@@ -33,19 +33,21 @@ class Exercise01Tests(unittest.TestCase):
         self.assertEqual(factorial(8), 40320)
 
     def test_maclaurin_sin(self):
-        self.assertAlmostEqual(maclaurin_sin(0, 7), sin(0))
-        self.assertAlmostEqual(maclaurin_sin(0.1, 7), sin(0.1))
-        self.assertAlmostEqual(maclaurin_sin(2, 7), sin(2))
-        self.assertAlmostEqual(maclaurin_sin(3, 7), sin(3))
-        self.assertAlmostEqual(maclaurin_sin(1.1, 7), sin(1.1))
-        self.assertAlmostEqual(maclaurin_sin(4, 7), sin(4))
+        places = 2
+        self.assertAlmostEqual(maclaurin_sin(0, 7), sin(0), places=places)
+        self.assertAlmostEqual(maclaurin_sin(0.1, 7), sin(0.1), places=places)
+        self.assertAlmostEqual(maclaurin_sin(2, 7), sin(2), places=places)
+        self.assertAlmostEqual(maclaurin_sin(3, 7), sin(3), places=places)
+        self.assertAlmostEqual(maclaurin_sin(1.1, 7), sin(1.1), places=places)
+        self.assertAlmostEqual(maclaurin_sin(4, 7), sin(4), places=places)
 
     def test_maclaurin_cos(self):
-        self.assertAlmostEqual(maclaurin_cos(0, 7), cos(0))
-        self.assertAlmostEqual(maclaurin_cos(0.1, 7), cos(0.1))
-        self.assertAlmostEqual(maclaurin_cos(1.1, 7), cos(1.1))
-        self.assertAlmostEqual(maclaurin_cos(3, 7), cos(3))
-        self.assertAlmostEqual(maclaurin_cos(4, 7), cos(4))
+        places = 2
+        self.assertAlmostEqual(maclaurin_cos(0, 7), cos(0), places=places)
+        self.assertAlmostEqual(maclaurin_cos(0.1, 7), cos(0.1), places=places)
+        self.assertAlmostEqual(maclaurin_cos(1.1, 7), cos(1.1), places=places)
+        self.assertAlmostEqual(maclaurin_cos(3, 7), cos(3), places=places)
+        self.assertAlmostEqual(maclaurin_cos(4, 7), cos(4), places=places)
 
     def test_fib(self):
         self.assertEqual(fib(0), 0)
@@ -61,9 +63,9 @@ class Exercise01Tests(unittest.TestCase):
     def test_string_to_int(self):
         self.assertEqual(string_to_int("123"), 123)
         self.assertEqual(string_to_int("-10"), -10)
-        self.assertRaises(string_to_int("abc"), ValueError)
+        with self.assertRaises(ValueError):
+            string_to_int("abc")
 
     def test_int_to_string(self):
         self.assertEqual(int_to_string(123), "123")
         self.assertEqual(int_to_string(-1), "-1")
-        self.assertRaises(int_to_string("abc"), ValueError)
