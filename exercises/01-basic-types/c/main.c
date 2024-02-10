@@ -160,6 +160,7 @@ static int
 test_maclaurin_cos(void)
 {
 	test_start();
+
     assert_near(maclaurin_cos(0, 7), cos(0), 0.05);
     assert_near(maclaurin_cos(0.1, 7), cos(0.1), 0.05);
     assert_near(maclaurin_cos(1.1, 7), cos(1.1), 0.05);
